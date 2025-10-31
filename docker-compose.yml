@@ -6,10 +6,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "4000:4000"
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=4000
       - AUTH_SERVICE_URL=${AUTH_SERVICE_URL:-http://localhost:3001/graphql}
     restart: unless-stopped
     networks:

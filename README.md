@@ -28,7 +28,7 @@ cp .env.example .env
 Edita el archivo `.env` con tus configuraciones:
 ```env
 NODE_ENV=development
-PORT=3000
+PORT=4000
 AUTH_SERVICE_URL=http://localhost:3001/graphql
 ```
 
@@ -53,12 +53,12 @@ docker compose down
 docker build -t microservicio-gateway:latest .
 
 # Ejecutar el contenedor
-docker run -p 3000:3000 --env-file .env microservicio-gateway:latest
+docker run -p 4000:4000 --env-file .env microservicio-gateway:latest
 
 # O con variables de entorno inline
-docker run -p 3000:3000 \
+docker run -p 4000:4000 \
   -e NODE_ENV=development \
-  -e PORT=3000 \
+  -e PORT=4000 \
   -e AUTH_SERVICE_URL=http://localhost:3001/graphql \
   microservicio-gateway:latest
 ```
@@ -75,7 +75,7 @@ nano .env
 Configurar variables para producción:
 ```env
 NODE_ENV=production
-PORT=3000
+PORT=4000
 AUTH_SERVICE_URL=http://auth-service:3001/graphql
 ```
 
@@ -152,7 +152,7 @@ El Dockerfile incluye un health check básico. Para verificar manualmente:
 
 ```bash
 # Verificar estado del contenedor
-docker compose exec gateway curl -f http://localhost:3000/graphql || echo "Servicio no disponible"
+docker compose exec gateway curl -f http://localhost:4000/graphql || echo "Servicio no disponible"
 
 # Ver estado de health check
 docker inspect microservicio_gateway_gateway_1 | grep -A 10 Health
@@ -176,7 +176,7 @@ docker compose logs gateway
 ## ⚠️ Notas Importantes
 
 - 📌 Asegúrate de que el servicio de autenticación esté corriendo antes del gateway
-- 📌 El puerto 3000 debe estar disponible en tu VPS
+- 📌 El puerto 4000 debe estar disponible en tu VPS
 - 📌 Configura las variables de entorno correctamente según tu arquitectura
 - 📌 Para producción, considera usar un registro de contenedores (Docker Hub, AWS ECR, etc.)
 - 📌 Realiza backups regulares de tus configuraciones
@@ -187,10 +187,10 @@ docker compose logs gateway
 
 **1. Puerto ya en uso:**
 ```bash
-# Ver qué proceso usa el puerto 3000
-sudo lsof -i :3000
+# Ver qué proceso usa el puerto 4000
+sudo lsof -i :4000
 # o
-sudo netstat -tulpn | grep 3000
+sudo netstat -tulpn | grep 4000
 ```
 
 **2. Contenedor no se conecta al servicio de auth:**
