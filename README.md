@@ -1,98 +1,214 @@
+# Microservicio Gateway - Veterinaria
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Microservicio Gateway construido con NestJS y Apollo GraphQL para el sistema de veterinaria. Este servicio actúa como punto de entrada único para la comunicación entre los diferentes microservicios.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 📋 Descripción
 
-## Description
+Este gateway utiliza Apollo Federation para combinar múltiples esquemas GraphQL de diferentes microservicios en un solo endpoint unificado.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📁 Archivos Docker
 
-## Project setup
+- `Dockerfile` - Configuración para construir la imagen Docker
+- `.dockerignore` - Archivos a excluir del contexto Docker
+- `docker-compose.yml` - Configuración para orquestación
+- `.env.example` - Variables de entorno de ejemplo
 
+## 🚀 Despliegue Local (Desarrollo)
+
+### 1. Preparar variables de entorno
 ```bash
-$ yarn install
+# Crear archivo .env basado en el ejemplo
+cp .env.example .env
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+Edita el archivo `.env` con tus configuraciones:
+```env
+NODE_ENV=development
+PORT=3000
+AUTH_SERVICE_URL=http://localhost:3001/graphql
 ```
 
-## Run tests
-
+### 2. Opción A: Docker Compose (Recomendado)
 ```bash
-# unit tests
-$ yarn run test
+# Construir y ejecutar todos los servicios
+docker compose up --build
 
-# e2e tests
-$ yarn run test:e2e
+# O ejecutar en segundo plano
+docker compose up -d --build
 
-# test coverage
-$ yarn run test:cov
+# Ver logs en tiempo real
+docker compose logs -f gateway
+
+# Detener servicios
+docker compose down
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### 3. Opción B: Docker directo
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+# Construir la imagen
+docker build -t microservicio-gateway:latest .
+
+# Ejecutar el contenedor
+docker run -p 3000:3000 --env-file .env microservicio-gateway:latest
+
+# O con variables de entorno inline
+docker run -p 3000:3000 \
+  -e NODE_ENV=development \
+  -e PORT=3000 \
+  -e AUTH_SERVICE_URL=http://localhost:3001/graphql \
+  microservicio-gateway:latest
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🌐 Despliegue en Producción
 
-## Resources
+### 1. Configurar variables de entorno de producción
+```bash
+# Crear archivo .env
+cp .env.example .env
+nano .env
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+Configurar variables para producción:
+```env
+NODE_ENV=production
+PORT=3000
+AUTH_SERVICE_URL=http://auth-service:3001/graphql
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 2. Desplegar en producción
+```bash
+# Construir y ejecutar en segundo plano
+docker compose up -d --build
 
-## Support
+# Verificar que los contenedores estén corriendo
+docker compose ps
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Ver logs
+docker compose logs -f gateway
+```
 
-## Stay in touch
+## 📊 Monitoreo y Mantenimiento
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Ver logs
+```bash
+# Logs del gateway
+docker compose logs -f gateway
 
-## License
+# Logs de todos los servicios
+docker compose logs -f
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+# Últimas 100 líneas
+docker compose logs --tail 100 gateway
+```
+
+### Estado de contenedores
+```bash
+# Ver contenedores corriendo
+docker compose ps
+
+# Ver uso de recursos
+docker stats
+
+# Ver información del sistema
+docker system df
+```
+
+### Comandos útiles
+```bash
+# Reiniciar solo el gateway
+docker compose restart gateway
+
+# Reconstruir y actualizar
+docker compose up -d --build
+
+# Limpiar contenedores parados
+docker container prune
+
+# Limpiar imágenes no utilizadas
+docker image prune
+```
+
+## 🔒 Seguridad
+
+### Buenas prácticas implementadas:
+- ✅ Usuario no-root en el contenedor
+- ✅ Variables de entorno para configuración sensible
+- ✅ Red Docker personalizada
+- ✅ Imagen Alpine para menor superficie de ataque
+
+### Recomendaciones adicionales:
+- 🔐 Usar un firewall (ufw, iptables)
+- 🔐 Configurar fail2ban
+- 🔐 Mantener Docker actualizado
+- 🔐 Usar secrets de Docker para datos sensibles en producción
+
+## 🚦 Health Check
+
+El Dockerfile incluye un health check básico. Para verificar manualmente:
+
+```bash
+# Verificar estado del contenedor
+docker compose exec gateway curl -f http://localhost:3000/graphql || echo "Servicio no disponible"
+
+# Ver estado de health check
+docker inspect microservicio_gateway_gateway_1 | grep -A 10 Health
+```
+
+## 🔄 Actualización del Servicio
+
+### Para actualizaciones sin downtime:
+```bash
+# 1. Construir nueva imagen
+docker compose build gateway
+
+# 2. Recrear solo el servicio gateway
+docker compose up -d --no-deps gateway
+
+# 3. Verificar que funciona
+docker compose ps
+docker compose logs gateway
+```
+
+## ⚠️ Notas Importantes
+
+- 📌 Asegúrate de que el servicio de autenticación esté corriendo antes del gateway
+- 📌 El puerto 3000 debe estar disponible en tu VPS
+- 📌 Configura las variables de entorno correctamente según tu arquitectura
+- 📌 Para producción, considera usar un registro de contenedores (Docker Hub, AWS ECR, etc.)
+- 📌 Realiza backups regulares de tus configuraciones
+
+## 🆘 Troubleshooting
+
+### Problemas comunes:
+
+**1. Puerto ya en uso:**
+```bash
+# Ver qué proceso usa el puerto 3000
+sudo lsof -i :3000
+# o
+sudo netstat -tulpn | grep 3000
+```
+
+**2. Contenedor no se conecta al servicio de auth:**
+```bash
+# Verificar conectividad de red
+docker compose exec gateway ping auth-service
+```
+
+**3. Variables de entorno no cargadas:**
+```bash
+# Verificar variables dentro del contenedor
+docker compose exec gateway env | grep AUTH_SERVICE_URL
+```
+
+## 📞 Soporte
+
+Si encuentras problemas, revisa:
+1. Los logs del contenedor
+2. La configuración de red
+3. Las variables de entorno
+4. La conectividad con otros servicios

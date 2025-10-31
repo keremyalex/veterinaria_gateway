@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - AUTH_SERVICE_URL=${AUTH_SERVICE_URL:-http://localhost:3001/graphql}
+    restart: unless-stopped
+    networks:
+      - veterinaria-network
+
+networks:
+  veterinaria-network:
+    driver: bridge

@@ -1,0 +1,31 @@
+# Archivos y directorios que no se deben incluir en el contexto de Docker
+node_modules
+npm-debug.log
+.npm
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+.coverage
+
+# Archivos de desarrollo
+*.log
+*.logs
+.DS_Store
+.vscode/
+.idea/
+
+# Archivos de testing
+test/
+*.test.js
+*.spec.js
+
+# Build cache
+.cache/
+dist/
+
+# Archivos temporales
+*.tmp
+*.temp
