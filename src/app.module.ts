@@ -33,6 +33,7 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
         supergraphSdl: new IntrospectAndCompose({
           subgraphs: [
             { name: 'auth', url: process.env.AUTH_SERVICE_URL },
+            { name: 'clinico', url: process.env.CLINICO_SERVICE_URL },
           ],
         }),
         buildService: ({ url }) => {
