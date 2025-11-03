@@ -26,8 +26,9 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
     GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
       server: {
-        playground: false,
-        introspection: true
+        playground: true, // Habilitar playground
+        introspection: true,
+        csrfPrevention: false, // Deshabilitar protección CSRF
       },
       gateway: {
         supergraphSdl: new IntrospectAndCompose({
