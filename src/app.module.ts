@@ -36,6 +36,7 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
             { name: 'auth', url: process.env.AUTH_SERVICE_URL },
             { name: 'clinico', url: process.env.CLINICO_SERVICE_URL },
             { name: 'kpi', url: process.env.KPI_SERVICE_URL },
+            { name: 'ventas', url: process.env.VENTAS_SERVICE_URL },
           ],
         }),
         buildService: ({ url }) => {

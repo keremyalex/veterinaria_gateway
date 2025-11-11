@@ -13,6 +13,7 @@ services:
       - AUTH_SERVICE_URL=${AUTH_SERVICE_URL:-http://localhost:3001/graphql}
       - CLINICO_SERVICE_URL=${CLINICO_SERVICE_URL:-http://localhost:8081/graphql}
       - KPI_SERVICE_URL=${KPI_SERVICE_URL:-http://localhost:9090/graphql}
+      - VENTAS_SERVICE_URL=${VENTAS_SERVICE_URL:-http://localhost:9091/graphql}
     restart: unless-stopped
     networks:
       - veterinaria-network
