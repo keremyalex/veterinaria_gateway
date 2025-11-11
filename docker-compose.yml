@@ -12,6 +12,7 @@ services:
       - PORT=4000
       - AUTH_SERVICE_URL=${AUTH_SERVICE_URL:-http://localhost:3001/graphql}
       - CLINICO_SERVICE_URL=${CLINICO_SERVICE_URL:-http://localhost:8081/graphql}
+      - KPI_SERVICE_URL=${KPI_SERVICE_URL:-http://localhost:9090/graphql}
     restart: unless-stopped
     networks:
       - veterinaria-network
